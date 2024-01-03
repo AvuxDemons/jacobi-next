@@ -1,4 +1,4 @@
-class JacobiSolver {
+class GaussSeidelSolver {
     constructor(koefisien, konstan, tebakanAwal, maksIterasi, toleransi) {
         this.koefisien = koefisien;
         this.konstan = konstan;
@@ -13,8 +13,6 @@ class JacobiSolver {
         let iterationsData = [];
 
         for (let k = 0; k < this.maksIterasi; k++) {
-            const x_baru = new Array(this.n).fill(0);
-
             for (let i = 0; i < this.n; i++) {
                 let jumlah = 0;
                 for (let j = 0; j < this.n; j++) {
@@ -22,25 +20,28 @@ class JacobiSolver {
                         jumlah += this.koefisien[i][j] * x[j];
                     }
                 }
-                x_baru[i] = (this.konstan[i] - jumlah) / this.koefisien[i][i];
+                x[i] = (this.konstan[i] - jumlah) / this.koefisien[i][i];
             }
 
-            let error = 0;
-            for (let i = 0; i < this.n; i++) {
-                error = Math.max(error, Math.abs(x_baru[i] - x[i]));
-            }
+            let error = this.calculateError(x);
 
-            iterationsData.push({ iteration: k + 1, error, x_baru: [...x_baru] });
+            iterationsData.push({ iteration: k + 1, error, x_baru: [...x] });
 
             if (error < this.toleransi) {
-                return { solution: x_baru, iterationsData };
+                return { solution: x, iterationsData };
             }
-
-            x = x_baru;
         }
 
         return { solution: null, iterationsData };
     }
+
+    calculateError(x) {
+        let error = 0;
+        for (let i = 0; i < this.n; i++) {
+            error = Math.max(error, Math.abs(x[i] - this.tebakanAwal[i]));
+        }
+        return error;
+    }
 }
 
-export default JacobiSolver;
+export default GaussSeidelSolver;
