@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import debounce from 'debounce';
 
 import JacobiSolver from "../../libs/Jacobi";
 
@@ -32,23 +33,23 @@ const Playground = () => {
         setToleransiError(0.0001);
     }, [dimensions]);
 
-    const handleLebarChange = (e) => {
+    const handleLebar = debounce((e) => {
         setDimensions((prevDimensions) => ({
             ...prevDimensions,
             lebar: e.target.value,
         }));
-
+    
         validateDimensions(dimensions.panjang, e.target.value);
-    };
-
-    const handlePanjangChange = (e) => {
+    }, 500);
+    
+    const handlePanjang = debounce((e) => {
         setDimensions((prevDimensions) => ({
             ...prevDimensions,
             panjang: e.target.value,
         }));
-
+    
         validateDimensions(dimensions.lebar, e.target.value);
-    };
+    }, 500);
 
     const validateDimensions = (panjang, lebar) => {
         if (panjang < 2 || lebar < 2) {
@@ -58,29 +59,29 @@ const Playground = () => {
         }
     };
 
-    const handleKoefisienChange = (e, rowIndex, colIndex) => {
+    const handleKoefisien = (e, rowIndex, colIndex) => {
         const newKoefisien = [...matriks];
         newKoefisien[rowIndex][colIndex] = e.target.value;
         setMatriks(newKoefisien);
     };
 
-    const handleHasilChange = (e, rowIndex) => {
+    const handleHasil = (e, rowIndex) => {
         const newHasil = [...hasil];
         newHasil[rowIndex] = e.target.value;
         setHasil(newHasil);
     };
 
-    const handleTebakanAwalChange = (e, index) => {
+    const handleTebakanAwal = (e, index) => {
         const newTebakanAwal = [...tebakanAwal];
         newTebakanAwal[index] = parseFloat(e.target.value) || 0;
         setTebakanAwal(newTebakanAwal);
     };
 
-    const handleMaxIterasiChange = (e) => {
+    const handleMaxIterasi = (e) => {
         setMaxIterasi(e.target.value);
     };
 
-    const handleErrorChange = (e) => {
+    const handleError = (e) => {
         setToleransiError(e.target.value);
     }
 
@@ -91,6 +92,7 @@ const Playground = () => {
 
         const solver = new JacobiSolver(koefisien, konstan, tebakanAwal, maxIterasi, toleransiError);
         const { solution, iterationsData } = solver.solve();
+        console.log(solution, iterationsData);
     };
 
     return (
@@ -105,14 +107,14 @@ const Playground = () => {
                         <input
                             type="number"
                             placeholder="P"
-                            onChange={handlePanjangChange}
+                            onChange={handlePanjang}
                             className="w-10 text-white dark:text-black text-center"
                         />
                         <p>x</p>
                         <input
                             type="number"
                             placeholder="L"
-                            onChange={handleLebarChange}
+                            onChange={handleLebar}
                             className="w-10 text-white dark:text-black text-center"
                         />
                     </div>
@@ -134,7 +136,7 @@ const Playground = () => {
                                                         key={colIndex}
                                                         type="number"
                                                         value={cell}
-                                                        onChange={(e) => handleKoefisienChange(e, rowIndex, colIndex)}
+                                                        onChange={(e) => handleKoefisien(e, rowIndex, colIndex)}
                                                         className="w-10 text-white dark:text-black m-1 text-center"
                                                     />
                                                 ))}
@@ -155,7 +157,7 @@ const Playground = () => {
                                                 key={rowIndex}
                                                 type="number"
                                                 value={row}
-                                                onChange={(e) => handleHasilChange(e, rowIndex)}
+                                                onChange={(e) => handleHasil(e, rowIndex)}
                                                 className="w-10 text-white dark:text-black m-1 text-center"
                                             />
                                         </div>
@@ -170,7 +172,7 @@ const Playground = () => {
                                     key={index}
                                     type="number"
                                     value={value}
-                                    onChange={(e) => handleTebakanAwalChange(e, index)}
+                                    onChange={(e) => handleTebakanAwal(e, index)}
                                     className="w-10 text-white dark:text-black m-1 text-center"
                                 />
                             ))}
@@ -181,7 +183,7 @@ const Playground = () => {
                                 <input
                                     type="number"
                                     value={maxIterasi}
-                                    onChange={handleMaxIterasiChange}
+                                    onChange={handleMaxIterasi}
                                     className="w-10 text-white dark:text-black text-center"
                                 />
                             </div>
@@ -190,7 +192,7 @@ const Playground = () => {
                                 <input
                                     type="number"
                                     value={toleransiError}
-                                    onChange={handleErrorChange}
+                                    onChange={handleError}
                                     className="w-20 text-white dark:text-black text-center"
                                 />
                             </div>
