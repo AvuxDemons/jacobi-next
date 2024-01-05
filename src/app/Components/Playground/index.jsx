@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react"
 import debounce from 'debounce';
 
+import Dimension from "./Input/Dimension";
+
 import JacobiSolver from "../../libs/Jacobi";
+import Matrix from "./Input/Matrix";
+import TebakanAwal from "./Input/Tebakan";
 
 const Playground = () => {
     const [dimensions, setDimensions] = useState({ lebar: 2, panjang: 2 });
@@ -38,16 +42,16 @@ const Playground = () => {
             ...prevDimensions,
             lebar: e.target.value,
         }));
-    
+
         validateDimensions(dimensions.panjang, e.target.value);
     }, 500);
-    
+
     const handlePanjang = debounce((e) => {
         setDimensions((prevDimensions) => ({
             ...prevDimensions,
             panjang: e.target.value,
         }));
-    
+
         validateDimensions(dimensions.lebar, e.target.value);
     }, 500);
 
@@ -101,82 +105,14 @@ const Playground = () => {
                 {dimensionError &&
                     <div className="bg-red-500 text-white text-center font-bold">{dimensionError}</div>
                 }
-                <div className="flex flex-col gap-2">
-                    <div className="flex flex-row gap-2">
-                        <p>Koefisien</p>
-                        <input
-                            type="number"
-                            placeholder="P"
-                            onChange={handlePanjang}
-                            className="w-10 text-white dark:text-black text-center"
-                        />
-                        <p>x</p>
-                        <input
-                            type="number"
-                            placeholder="L"
-                            onChange={handleLebar}
-                            className="w-10 text-white dark:text-black text-center"
-                        />
-                    </div>
-                </div>
+
+                <Dimension handleLebar={handleLebar} handlePanjang={handlePanjang} />
+
                 {!dimensionError && (
                     <>
-
-                        <div className="flex flex-row gap-2">
-                            <div className="flex flex-col">
-                                <div>
-                                    <p>Koefisien</p>
-                                </div>
-                                <div>
-                                    {matriks.map((row, rowIndex) => (
-                                        <div key={rowIndex} className="flex">
-                                            <div className="flex flex-row items-center">
-                                                {row.map((cell, colIndex) => (
-                                                    <input
-                                                        key={colIndex}
-                                                        type="number"
-                                                        value={cell}
-                                                        onChange={(e) => handleKoefisien(e, rowIndex, colIndex)}
-                                                        className="w-10 text-white dark:text-black m-1 text-center"
-                                                    />
-                                                ))}
-                                                <p>=</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex flex-col">
-                                <div>
-                                    <p>Hasil</p>
-                                </div>
-                                <div>
-                                    {hasil.map((row, rowIndex) => (
-                                        <div key={rowIndex} className="flex">
-                                            <input
-                                                key={rowIndex}
-                                                type="number"
-                                                value={row}
-                                                onChange={(e) => handleHasil(e, rowIndex)}
-                                                className="w-10 text-white dark:text-black m-1 text-center"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Tebakan Awal</p>
-                            {tebakanAwal.map((value, index) => (
-                                <input
-                                    key={index}
-                                    type="number"
-                                    value={value}
-                                    onChange={(e) => handleTebakanAwal(e, index)}
-                                    className="w-10 text-white dark:text-black m-1 text-center"
-                                />
-                            ))}
-                        </div>
+                        <Matrix matriks={matriks} hasil={hasil} handleKoefisien={handleKoefisien} handleHasil={handleHasil} />
+                        <TebakanAwal tebakanAwal={tebakanAwal} handleTebakanAwal={handleTebakanAwal} />
+                        
                         <div className="flex flex-row gap-2">
                             <div>
                                 <p>Max Iterasi</p>
