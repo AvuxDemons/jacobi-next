@@ -22,6 +22,7 @@ const Matrix = ({ matriks, hasil, handleKoefisien, handleHasil }) => {
                 {matriks.map(() => (
                     <p>=</p>
                 ))}
+                <p>375 , 254</p>
             </div>
             <div>
                 {hasil.map((row, rowIndex) => (

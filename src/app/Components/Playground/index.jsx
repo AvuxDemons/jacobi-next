@@ -40,6 +40,8 @@ const Playground = () => {
         setMaxIterasi(10);
         setToleransiError(0.0001);
         setFloor(4);
+        setSolution(null);
+        setIterationsData([]);
     }, [dimensions]);
 
     const validateDimensions = (panjang, lebar) => {

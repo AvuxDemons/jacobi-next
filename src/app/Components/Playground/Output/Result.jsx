@@ -4,7 +4,7 @@ import { useState } from "react";
 import * as fa from "react-icons/fa";
 
 const Result = ({ dimension, solution, iterationsData, floor }) => {
-    const id = Array.from({ length: parseInt(dimension.panjang) }, (_, index) => 'A'.charCodeAt(0) + index)
+    const char = Array.from({ length: parseInt(dimension.panjang) }, (_, index) => 'A'.charCodeAt(0) + index)
 
     const [showDetails, setShowDetails] = useState([]);
 
@@ -13,13 +13,16 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
             <table className="w-full text-sm">
                 <caption className="p-5 text-lg font-semibold tracking-widest bg-superDark-400">
                     Hasil Perhitungan
+                    <p className="text-sm font-medium tracking-wide mt-4 bg-superDark-300 rounded-lg p-4">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe aliquam officia cum. Pariatur voluptates quo quod quae ipsa in quos eveniet, quisquam aliquam possimus accusantium voluptatibus deserunt placeat veniam esse.
+                    </p>
                 </caption>
                 <thead className="text-xs text-superDark-900 tracking-widest uppercase bg-superDark-300">
                     <tr>
                         <th scope="col" className="px-2 py-3">
                             Iterasi
                         </th>
-                        {id.map((value, index) => (
+                        {char.map((value, index) => (
                             <th scope="col" className="px-2 py-3">
                                 {String.fromCharCode(value)}
                             </th>
@@ -33,26 +36,26 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                     </tr>
                 </thead>
                 <tbody className="text-[12px] md:text-xs text-superDark-900 text-center">
-                    {iterationsData.map((iteration, index) => (
+                    {iterationsData.map((iteration, id) => (
                         <>
-                            <tr className={`${index !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-200" : "bg-superDark-300"}`}>
+                            <tr className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-200" : "bg-superDark-300"}`}>
                                 <td scope="row" className="px-2 py-4">
                                     {iteration.iteration}
                                 </td>
-                                {iteration.x_baru.map((value, index) => (
+                                {iteration.x.baru.map((value, index) => (
                                     <td scope="row" className="px-2 py-4">
-                                        {value.toFixed(floor)}
+                                        {value.toFixed(floor) === "NaN" ? "-" : value.toFixed(floor)}
                                     </td>
                                 ))}
                                 <td scope="row" className="px-2 py-4">
-                                    {parseFloat(iteration.error.error).toFixed(floor)}
+                                    {parseFloat(iteration.error.error).toFixed(floor) === "NaN" ? "Belum Diketahui" : parseFloat(iteration.error.error).toFixed(floor)}
                                 </td>
                                 <td scope="row" className="px-2 py-4">
                                     <button
                                         className="p-1 rounded bg-superDark-100 hover:bg-superDark-900 hover:text-black"
                                         onClick={() => {
                                             const newShowDetails = [...showDetails];
-                                            newShowDetails[index] = !newShowDetails[index];
+                                            newShowDetails[id] = !newShowDetails[id];
                                             setShowDetails(newShowDetails);
                                         }}
                                     >
@@ -61,17 +64,26 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                 </td>
                             </tr>
 
-                            {/* SHOW HIDE THIS DIV */}
-                            {showDetails[index] && (
-                                <tr className={`${index !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-300" : "bg-superDark-300"}`}>
-                                    <td scope="row" colSpan={id.length + 3} className="px-2 py-4">
-                                        <div className="grid grid-cols-2 items-center justify-between mx-4">
+                            {showDetails[id] && (
+                                <tr className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-300" : "bg-superDark-300"}`}>
+                                    <td scope="row" colSpan={char.length + 3} className="px-2 py-4">
+                                        <div className="grid grid-cols-1 items-center justify-between mx-4 gap-4">
                                             <div className="flex flex-col gap-2">
-                                                <p>Koefisien</p>
+                                                <p>Hasil Lama</p>
                                                 <p className={`grid grid-cols-${id.length}`}>
-                                                    {id.map((value, index) => (
+                                                    {char.map((value, index) => (
                                                         <span>
-                                                            {String.fromCharCode(value)} = {iteration.x_baru[index].toFixed(floor)}
+                                                            {String.fromCharCode(value)} : {iteration.x.lama[index].toFixed(floor)}
+                                                        </span>
+                                                    ))}
+                                                </p>
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <p>Hasil Baru</p>
+                                                <p className={`grid grid-cols-${id.length}`}>
+                                                    {char.map((value, index) => (
+                                                        <span>
+                                                            {String.fromCharCode(value)} : {iteration.x.baru[index].toFixed(floor)}
                                                         </span>
                                                     ))}
                                                 </p>
@@ -79,9 +91,9 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                             <div className="flex flex-col gap-2">
                                                 <p>Error</p>
                                                 <p className={`grid grid-cols-${id.length}`}>
-                                                    {id.map((value, index) => (
+                                                    {char.map((value, index) => (
                                                         <span>
-                                                            {String.fromCharCode(value)} : {parseFloat(iteration.error.allError[index]).toFixed(floor)}
+                                                            {String.fromCharCode(value)} : {parseFloat(iteration.error.error).toFixed(floor)}
                                                         </span>
                                                     ))}
                                                 </p>

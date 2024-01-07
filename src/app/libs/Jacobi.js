@@ -12,8 +12,6 @@ class JacobiSolver {
         let x = this.tebakanAwal.slice();
         let iterationsData = [];
 
-        iterationsData.push({ iteration: 0, error: {error: "Belum Diketahui", allError: []}, x_baru: x });
-
         for (let k = 0; k < this.maksIterasi; k++) {
             const x_baru = new Array(this.n).fill(0);
 
@@ -34,7 +32,7 @@ class JacobiSolver {
                 error = Math.max(error, Math.abs(x_baru[i] - x[i]));
             }
 
-            iterationsData.push({ iteration: k + 1, error: { error, allError }, x_baru: [...x_baru] });
+            iterationsData.push({ iteration: k + 1, error: { error, allError }, x: { baru: [...x_baru], lama: [...x] } });
 
             if (error < this.toleransi) {
                 return { solution: x_baru, iterationsData };
