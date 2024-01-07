@@ -1,4 +1,4 @@
-const TebakanAwal = ({ tebakanAwal, handleTebakanAwal }) => {
+const Guess = ({ tebakanAwal, handleTebakanAwal }) => {
     return (
         <div className="flex flex-row">
             {
@@ -8,7 +8,7 @@ const TebakanAwal = ({ tebakanAwal, handleTebakanAwal }) => {
                         type="number"
                         value={value}
                         onChange={(e) => handleTebakanAwal(e, index)}
-                        className="w-10 text-white dark:text-black text-center"
+                        className="w-12 text-white dark:text-black text-center"
                     />
                 ))
             }
@@ -16,4 +16,4 @@ const TebakanAwal = ({ tebakanAwal, handleTebakanAwal }) => {
     )
 };
 
-export default TebakanAwal
+export default Guess

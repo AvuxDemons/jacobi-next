@@ -4,10 +4,11 @@ import { useState, useEffect } from "react"
 import debounce from 'debounce';
 
 import Dimension from "./Input/Dimension";
+import Matrix from "./Input/Matrix";
+import TebakanAwal from "./Input/Guess";
+import Result from "./Output/Result";
 
 import JacobiSolver from "../../libs/Jacobi";
-import Matrix from "./Input/Matrix";
-import TebakanAwal from "./Input/Tebakan";
 
 const Playground = () => {
     const [dimensions, setDimensions] = useState({ lebar: 2, panjang: 2 });
@@ -18,6 +19,9 @@ const Playground = () => {
     const [toleransiError, setToleransiError] = useState();
 
     const [dimensionError, setDimensionError] = useState();
+    const [solution, setSolution] = useState(null);
+    const [iterationsData, setIterationsData] = useState([]);
+    const [floor, setFloor] = useState(2);
 
     useEffect(() => {
         const { lebar, panjang } = dimensions;
@@ -33,9 +37,23 @@ const Playground = () => {
         const newTebakanAwal = Array.from({ length: panjang }, () => 0);
         setTebakanAwal(newTebakanAwal);
 
-        setMaxIterasi(0);
+        setMaxIterasi(10);
         setToleransiError(0.0001);
+        setFloor(4);
     }, [dimensions]);
+
+    const validateDimensions = (panjang, lebar) => {
+        if (panjang < 2 || lebar < 2) {
+            setDimensionError("Ukuran matriks minimal 2x2.");
+        } else {
+            setDimensionError(null);
+        }
+    };
+
+    const countFloor = () => {
+        const decimalPart = toleransiError.toString().split('.')[1];
+        return decimalPart ? decimalPart.length : 0;
+    }
 
     const handleLebar = debounce((e) => {
         setDimensions((prevDimensions) => ({
@@ -54,14 +72,6 @@ const Playground = () => {
 
         validateDimensions(dimensions.lebar, e.target.value);
     }, 500);
-
-    const validateDimensions = (panjang, lebar) => {
-        if (panjang < 2 || lebar < 2) {
-            setDimensionError("Ukuran matriks minimal 2x2.");
-        } else {
-            setDimensionError(null);
-        }
-    };
 
     const handleKoefisien = (e, rowIndex, colIndex) => {
         const newKoefisien = [...matriks];
@@ -87,6 +97,7 @@ const Playground = () => {
 
     const handleError = (e) => {
         setToleransiError(e.target.value);
+        setFloor(countFloor());
     }
 
     const handleSolveClick = () => {
@@ -97,10 +108,12 @@ const Playground = () => {
         const solver = new JacobiSolver(koefisien, konstan, tebakanAwal, maxIterasi, toleransiError);
         const { solution, iterationsData } = solver.solve();
         console.log(solution, iterationsData);
+        setSolution(solution);
+        setIterationsData(iterationsData);
     };
 
     return (
-        <section className="grid grid-cols-1 md:grid-cols-2 max-w-[1300px] mx-auto">
+        <section className="grid grid-cols-1 max-w-screen-xl mx-auto min-h-screen">
             <div className="flex flex-col gap-5">
                 {dimensionError &&
                     <div className="bg-red-500 text-white text-center font-bold">{dimensionError}</div>
@@ -112,7 +125,7 @@ const Playground = () => {
                     <>
                         <Matrix matriks={matriks} hasil={hasil} handleKoefisien={handleKoefisien} handleHasil={handleHasil} />
                         <TebakanAwal tebakanAwal={tebakanAwal} handleTebakanAwal={handleTebakanAwal} />
-                        
+
                         <div className="flex flex-row gap-2">
                             <div>
                                 <p>Max Iterasi</p>
@@ -120,7 +133,7 @@ const Playground = () => {
                                     type="number"
                                     value={maxIterasi}
                                     onChange={handleMaxIterasi}
-                                    className="w-10 text-white dark:text-black text-center"
+                                    className="max-w-20 text-white dark:text-black text-center"
                                 />
                             </div>
                             <div>
@@ -129,7 +142,7 @@ const Playground = () => {
                                     type="number"
                                     value={toleransiError}
                                     onChange={handleError}
-                                    className="w-20 text-white dark:text-black text-center"
+                                    className="max-w-20 text-white dark:text-black text-center"
                                 />
                             </div>
                         </div>
@@ -138,7 +151,12 @@ const Playground = () => {
                 )}
             </div>
             <div>
-                tabel
+                <Result
+                    dimension={dimensions}
+                    solution={solution}
+                    iterationsData={iterationsData}
+                    floor={floor}
+                />
             </div>
         </section>
     );

@@ -11,7 +11,7 @@ const Matrix = ({ matriks, hasil, handleKoefisien, handleHasil }) => {
                                     type="number"
                                     value={cell}
                                     onChange={(e) => handleKoefisien(e, rowIndex, colIndex)}
-                                    className="w-10 text-white dark:text-black text-center"
+                                    className="w-12 text-white dark:text-black text-center"
                                 />
                             ))}
                         </div>
@@ -31,7 +31,7 @@ const Matrix = ({ matriks, hasil, handleKoefisien, handleHasil }) => {
                             type="number"
                             value={row}
                             onChange={(e) => handleHasil(e, rowIndex)}
-                            className="w-10 text-white dark:text-black text-center"
+                            className="w-12 text-white dark:text-black text-center"
                         />
                     </div>
                 ))}

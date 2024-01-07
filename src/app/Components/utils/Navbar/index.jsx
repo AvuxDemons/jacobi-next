@@ -1,9 +1,23 @@
+import Image from "next/image"
+
 const Navbar = () => {
     return (
-        <nav class="bg-white border-gray-200 dark:bg-neutral-800">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <img src="/assets/images/itats.png" class="h-10" alt="Logo ITATS" />
-                <img src="/assets/images/informatika.png" class="h-8 pl-2" alt="Logo Informatika" />
+        <nav className="bg-superDark-200 shadow">
+            <div className="max-w-screen-2xl flex flex-wrap items-center justify-center md:justify-between mx-auto p-4">
+                <Image
+                    src="/assets/images/itats.png"
+                    width={140}
+                    height={100}
+                    className="h-10"
+                    alt="Logo ITATS"
+                />
+                <Image
+                    src="/assets/images/informatika.png"
+                    width={180}
+                    height={100}
+                    className="h-8  hidden md:block"
+                    alt="Logo Informatika"
+                />
             </div>
         </nav>
     )
