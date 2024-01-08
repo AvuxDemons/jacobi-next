@@ -45,6 +45,11 @@ const Playground = () => {
         setIterationsData([]);
     }, [dimensions]);
 
+    useEffect(() => {
+        setSolution(null);
+        setIterationsData([]);
+    }, [toleransiError, maxIterasi]);
+
     const validateDimensions = (panjang, lebar) => {
         if (panjang < 2 || lebar < 2) {
             setDimensionError("Ukuran matriks minimal 2x2.");
@@ -114,7 +119,10 @@ const Playground = () => {
     };
 
     return (
-        <section className="grid grid-cols-1 max-w-screen-xl mx-auto min-h-screen gap-10">
+        <section className="grid grid-cols-1 max-w-screen-xl mx-auto min-h-screen gap-16">
+            <p className="font-bold text-3xl text-center">
+                Playground
+            </p>
             <div className="flex flex-col gap-5 items-center">
                 {dimensionError &&
                     <div className="bg-red-500 text-white text-center font-bold w-full max-w-lg rounded">{dimensionError}</div>

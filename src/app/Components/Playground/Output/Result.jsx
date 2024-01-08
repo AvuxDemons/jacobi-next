@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 import * as fa from "react-icons/fa";
 
@@ -51,7 +52,7 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                     ) : null}
                 </caption>
                 <thead className="text-xs text-superDark-900 tracking-widest uppercase bg-superDark-300">
-                    <tr>
+                    <tr className="border-b border-superDark-300">
                         <th scope="col" className="px-2 py-3">
                             Iterasi
                         </th>
@@ -78,7 +79,7 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                 <div className="flex flex-row justify-center items-center gap-2 font-bold tracking-widest">
                                     <fa.FaInfoCircle />
                                     <p className="uppercase">
-                                        Solusi Tidak Ditemukan
+                                        Belum ada Perhitungan
                                     </p>
                                 </div>
                             </td>
@@ -87,7 +88,12 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
 
                     {iterationsData.map((iteration, id) => (
                         <>
-                            <tr className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-200" : "bg-superDark-300"}`} key={id}>
+                            <motion.tr
+                                key={`detail-${id}`}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 0.1 * id }}
+                                className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-200" : "bg-superDark-300"}`}>
                                 <td scope="row" className="px-2 py-4">
                                     {iteration.iteration}
                                 </td>
@@ -115,57 +121,65 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                         <fa.FaEye />
                                     </button>
                                 </td>
-                            </tr>
+                            </motion.tr>
 
-                            {showDetails[id] && (
-                                <tr className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-300" : "bg-superDark-300"}`}>
-                                    <td scope="row" colSpan={char.length + 3} className="px-2 py-4">
-                                        <div className="grid grid-cols-3 items-center justify-between mx-4 gap-4">
-                                            <div className="flex flex-col gap-2">
-                                                <p>Hasil Lama</p>
-                                                <p className={`grid grid-cols-${id.length}`}>
-                                                    {char.map((value, index) => (
-                                                        <span
-                                                            key={index}
-                                                        >
-                                                            {String.fromCharCode(value)} : {iteration.x.lama[index].toFixed(floor) == 'NaN' ? '-' : iteration.x.lama[index].toFixed(floor)}
-                                                        </span>
-                                                    ))}
-                                                </p>
+                            {
+                                showDetails[id] && (
+                                    <motion.tr
+                                        key={`detail-${id}`}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                        className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-300" : "bg-superDark-300"}`}
+                                    >
+                                        <td scope="row" colSpan={char.length + 3} className="px-2 py-4">
+                                            <div className="grid grid-cols-3 items-center justify-between mx-4 gap-4">
+                                                <div className="flex flex-col gap-2">
+                                                    <p>Hasil Lama</p>
+                                                    <p className={`grid grid-cols-${id.length}`}>
+                                                        {char.map((value, index) => (
+                                                            <span
+                                                                key={index}
+                                                            >
+                                                                {String.fromCharCode(value)} : {iteration.x.lama[index].toFixed(floor) == 'NaN' ? '-' : iteration.x.lama[index].toFixed(floor)}
+                                                            </span>
+                                                        ))}
+                                                    </p>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <p>Hasil Baru</p>
+                                                    <p className={`grid grid-cols-${id.length}`}>
+                                                        {char.map((value, index) => (
+                                                            <span
+                                                                key={index}
+                                                            >
+                                                                {String.fromCharCode(value)} : {iteration.x.baru[index].toFixed(floor) == 'NaN' ? '-' : iteration.x.baru[index].toFixed(floor)}
+                                                            </span>
+                                                        ))}
+                                                    </p>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <p>Error</p>
+                                                    <p className={`grid grid-cols-${id.length}`}>
+                                                        {char.map((value, index) => (
+                                                            <span
+                                                                key={index}
+                                                            >
+                                                                {String.fromCharCode(value)} : {parseFloat(iteration.error.error).toFixed(floor) == 'NaN' ? '-' : parseFloat(iteration.error.error).toFixed(floor)}
+                                                            </span>
+                                                        ))}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="flex flex-col gap-2">
-                                                <p>Hasil Baru</p>
-                                                <p className={`grid grid-cols-${id.length}`}>
-                                                    {char.map((value, index) => (
-                                                        <span
-                                                            key={index}
-                                                        >
-                                                            {String.fromCharCode(value)} : {iteration.x.baru[index].toFixed(floor) == 'NaN' ? '-' : iteration.x.baru[index].toFixed(floor)}
-                                                        </span>
-                                                    ))}
-                                                </p>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <p>Error</p>
-                                                <p className={`grid grid-cols-${id.length}`}>
-                                                    {char.map((value, index) => (
-                                                        <span
-                                                            key={index}
-                                                        >
-                                                            {String.fromCharCode(value)} : {parseFloat(iteration.error.error).toFixed(floor) == 'NaN' ? '-' : parseFloat(iteration.error.error).toFixed(floor)}
-                                                        </span>
-                                                    ))}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
+                                        </td>
+                                    </motion.tr>
+                                )
+                            }
                         </>
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div >
     )
 }
 

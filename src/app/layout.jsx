@@ -8,7 +8,10 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] })
 
 export const metadata = {
   title: 'Jacobi',
-  description: 'Davin Tistama Brilliant Samudra - 06.2022.1.07536',
+  description: 'PLATFORM YANG MENGGUNAKAN METODE ITERATIF JACOBI UNTUK MEMUDAHKAN PENYELESAIAN SISTEM PERSAMAAN LINEAR. PENGGUNA DAPAT MASUKKAN DATA DAN PLATFORM MENGHITUNG SOLUSI DENGAN CEPAT, YANG BERGUNA UNTUK KOMPUTASI NUMERIK TANPA KOMPLEKSITAS.',
+  icons: {
+    icon: '/assets/images/icon.png',
+  },
 }
 
 export default function RootLayout({ children }) {
