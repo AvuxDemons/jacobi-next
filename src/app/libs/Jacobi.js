@@ -6,6 +6,7 @@ class JacobiSolver {
         this.maksIterasi = maksIterasi;
         this.toleransi = toleransi;
         this.n = koefisien.length;
+        this.m = koefisien[0].length;
     }
 
     solve() {
@@ -17,7 +18,7 @@ class JacobiSolver {
 
             for (let i = 0; i < this.n; i++) {
                 let jumlah = 0;
-                for (let j = 0; j < this.n; j++) {
+                for (let j = 0; j < this.m; j++) {
                     if (j !== i) {
                         jumlah += this.koefisien[i][j] * x[j];
                     }
@@ -41,7 +42,7 @@ class JacobiSolver {
             x = x_baru;
         }
 
-        return { solution: null, iterationsData };
+        return { solution: [], iterationsData };
     }
 }
 

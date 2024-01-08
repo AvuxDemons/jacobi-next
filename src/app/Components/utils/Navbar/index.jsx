@@ -3,7 +3,7 @@ import Image from "next/image"
 const Navbar = () => {
     return (
         <nav className="bg-superDark-200 shadow">
-            <div className="max-w-screen-2xl flex flex-wrap items-center justify-center md:justify-between mx-auto p-4">
+            <div className="max-w-screen-2xl flex flex-wrap items-center justify-center md:justify-between mx-20 p-4">
                 <Image
                     src="/assets/images/itats.png"
                     width={140}

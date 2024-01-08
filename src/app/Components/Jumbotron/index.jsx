@@ -4,7 +4,7 @@ const Jumbotron = () => {
     return (
         <div className="w-full h-screen bg-gradient-to-b from-superDark-100 to-black">
             <div className="p-6 flex flex-col gap-2 md:gap-4 justify-center items-center h-full max-w-screen-lg mx-auto">
-                <p className="text-xs md:text-md text-superDark- font-bold tracking-widest mt-[-30%] md:mt-[-15%] uppercase">
+                <p className="text-xs md:text-md text-superDark- font-bold tracking-widest mt-[-30%] md:mt-[-6.5%] uppercase">
                     KOMPUTASI NUMERIK
                 </p>
                 <p className="text-4xl md:text-7xl font-bold tracking-wider md:tracking-widest uppercase">
