@@ -90,7 +90,7 @@ const Playground = () => {
 
     const handleTebakanAwal = (e, index) => {
         const newTebakanAwal = [...tebakanAwal];
-        newTebakanAwal[index] = parseFloat(e.target.value) || 0;
+        newTebakanAwal[index] = parseInt(e.target.value);
         setTebakanAwal(newTebakanAwal);
     };
 
@@ -107,12 +107,9 @@ const Playground = () => {
     const handleSolveClick = () => {
         const koefisien = matriks.map(row => row.map(cell => parseFloat(cell)));
         const konstan = hasil.map(value => parseFloat(value));
-        const tebakanAwal = Array.from({ length: dimensions.lebar }, () => 0);
 
         const solver = new JacobiSolver(koefisien, konstan, tebakanAwal, maxIterasi, toleransiError);
         const { solution, iterationsData } = solver.solve();
-
-        console.log(solution, iterationsData);
 
         setSolution(solution);
         setIterationsData(iterationsData);
