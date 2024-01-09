@@ -37,7 +37,7 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                             <p className="font-bold uppercase">Error</p>
                                             <div className="flex flex-col">
                                                 {char.map((value, index) => (
-                                                    <span key={index}>{String.fromCharCode(value)} : {solution[index]}</span>
+                                                    <span key={index}>{String.fromCharCode(value)} : {iterationsData[iterationsData.length - 1].error.allError[index]}</span>
                                                 ))}
                                             </div>
                                         </div>
@@ -93,7 +93,7 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5, delay: 0.1 * id }}
-                                className={`${id !== iterationsData.length - 1 ? "border-b border-superDark-300 bg-superDark-200" : "bg-superDark-300"}`}>
+                                className={`bg-superDark-200 ${id !== iterationsData.length - 1 ? "border-b border-superDark-300" : ""}`}>
                                 <td scope="row" className="px-2 py-4">
                                     {iteration.iteration}
                                 </td>
@@ -165,7 +165,7 @@ const Result = ({ dimension, solution, iterationsData, floor }) => {
                                                             <span
                                                                 key={index}
                                                             >
-                                                                {String.fromCharCode(value)} : {parseFloat(iteration.error.error).toFixed(floor) == 'NaN' ? '-' : parseFloat(iteration.error.error).toFixed(floor)}
+                                                                {String.fromCharCode(value)} : {parseFloat(iteration.error.allError[index]).toFixed(floor) == 'NaN' ? '-' : parseFloat(iteration.error.allError[index]).toFixed(floor)}
                                                             </span>
                                                         ))}
                                                     </p>
